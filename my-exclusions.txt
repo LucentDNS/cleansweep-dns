@@ -1,1 +1,4 @@
-! 例:||misjudged-tracker.com^
+! 在此添加需要从最终列表中排除的域名规则。
+! 注意：只有去掉行首的 ! 才会真正生效。
+! 示例：
+! ||misjudged-tracker.com^
