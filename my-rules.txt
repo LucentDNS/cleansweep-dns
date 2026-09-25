@@ -1,1 +1,4 @@
-! 例:||annoying-ads.example.com^
+! 在此添加自定义拦截规则。
+! 注意：只有去掉行首的 ! 才会真正生效。
+! 示例：
+! ||annoying-ads.example.com^
