@@ -1,0 +1,48 @@
+{
+  "name": "CleanSweep DNS",
+  "description": "One list to sweep them all — ads, in-app ads, trackers, telemetry, phishing, scams and malware. A curated, all-in-one DNS blocklist for AdGuard Home and AdGuard for Android.",
+  "homepage": "https://github.com/LucentDNS/cleansweep-dns",
+  "license": "GPL-3.0",
+  "version": "2.3.0.0",
+  "sources": [
+    {
+      "name": "HaGeZi's Pro Blocklist",
+      "source": "https://cdn.jsdelivr.net/gh/hagezi/dns-blocklists@latest/adblock/pro.txt",
+      "type": "adblock",
+      "transformations": ["RemoveModifiers", "Validate"]
+    },
+    {
+      "name": "HaGeZi's Threat Intelligence Feeds (Mini)",
+      "source": "https://cdn.jsdelivr.net/gh/hagezi/dns-blocklists@latest/adblock/tif.mini.txt",
+      "type": "adblock",
+      "transformations": ["RemoveModifiers", "Validate"]
+    },
+    {
+      "name": "AdGuard Chinese filter — ad servers",
+      "source": "https://adguardteam.github.io/AdguardFilters/ChineseFilter/sections/adservers.txt",
+      "type": "adblock",
+      "transformations": ["RemoveModifiers", "Validate"]
+    },
+    {
+      "name": "AdGuard Chinese filter — first-party servers",
+      "source": "https://adguardteam.github.io/AdguardFilters/ChineseFilter/sections/adservers_firstparty.txt",
+      "type": "adblock",
+      "transformations": ["RemoveModifiers", "Validate"]
+    },
+    {
+      "name": "EasyList China",
+      "source": "https://cdn.jsdelivr.net/gh/easylist/easylistchina@master/easylistchina.txt",
+      "type": "adblock",
+      "exclusions": ["/(?!^(\\|\\||@@\\|\\|))^.+/", "$third-party"],
+      "transformations": ["RemoveModifiers", "Validate"]
+    },
+    {
+      "name": "Custom rules",
+      "source": "my-rules.txt",
+      "type": "adblock",
+      "transformations": ["Validate"]
+    }
+  ],
+  "transformations": ["RemoveComments", "Deduplicate", "Compress"],
+  "exclusions_sources": ["my-exclusions.txt"]
+}

@@ -1,0 +1,71 @@
+name: Build CleanSweep DNS
+
+on:
+  schedule:
+    - cron: "53 2 * * *"     # UTC 02:53 = 北京 10:53 主跑,收割 HaGeZi 当日全量
+    - cron: "53 15 * * *"    # UTC 15:53 = 北京 23:53 晚跑,收中文源白天更新 + 兜底
+  workflow_dispatch:
+
+permissions:
+  contents: write            # 推送 filter.txt 所需
+  actions: write             # keepalive-workflow v2(API 模式)所需
+
+concurrency:
+  group: build
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install hostlist-compiler
+        run: npm install -g @adguard/hostlist-compiler
+
+      - name: Stamp build date into version
+        run: |
+          VERSION="$(date -u +'%Y.%m.%d.0')"
+          sed -i "s/\"version\": *\"[^\"]*\"/\"version\": \"${VERSION}\"/" configuration.json
+          echo "Build version: ${VERSION}"
+
+      - name: Compile filter
+        run: hostlist-compiler -c configuration.json -o filter.txt -v
+
+      - name: Add list header
+        run: |
+          RULES=$(grep -vcE '^(!|#|$)' filter.txt)
+          {
+            echo "! Title: CleanSweep DNS"
+            echo "! One list to sweep them all — ads, trackers, phishing, scams and malware."
+            echo "! Homepage: https://github.com/${GITHUB_REPOSITORY}"
+            echo "! License: GPL-3.0"
+            echo "! Last updated: $(date -u +'%Y-%m-%d %H:%M UTC')"
+            echo "! Rules: ${RULES}"
+            echo "!"
+          } > /tmp/header.txt
+          cat /tmp/header.txt filter.txt > /tmp/filter.txt && mv /tmp/filter.txt filter.txt
+
+      - name: Revert version stamp (keep repo clean)
+        run: git checkout -- configuration.json
+
+      - name: Commit and push
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add filter.txt
+          if git diff --cached --quiet; then
+            echo "Sources unchanged — nothing to commit."
+          else
+            git commit -m "Auto-build $(date -u +'%Y-%m-%d %H:%M UTC') [skip ci]"
+            git push
+          fi
+
+      - name: Keepalive (prevent 60-day auto-disable)
+        uses: gautamkrishnar/keepalive-workflow@v2
