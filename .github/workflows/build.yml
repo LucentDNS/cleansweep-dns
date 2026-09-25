@@ -36,11 +36,15 @@ jobs:
           echo "Build version: ${VERSION}"
 
       - name: Compile filter
-        run: hostlist-compiler -c configuration.json -o filter.txt -v
+        run: hostlist-compiler -c configuration.json -o filter.txt --verbose
 
       - name: Add list header
         run: |
-          RULES=$(grep -vcE '^(!|#|$)' filter.txt)
+          # 删除 hostlist-compiler 自动生成的头部注释，避免与下方头部重复
+          sed -i '/^!/d' filter.txt
+
+          RULES=$(grep -vcE '^(!|#|$)' filter.txt || true)
+
           {
             echo "! Title: CleanSweep DNS"
             echo "! One list to sweep them all — ads, trackers, phishing, scams and malware."
@@ -50,6 +54,7 @@ jobs:
             echo "! Rules: ${RULES}"
             echo "!"
           } > /tmp/header.txt
+
           cat /tmp/header.txt filter.txt > /tmp/filter.txt && mv /tmp/filter.txt filter.txt
 
       - name: Revert version stamp (keep repo clean)
