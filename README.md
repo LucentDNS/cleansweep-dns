@@ -7,12 +7,12 @@
 
 A curated, all-in-one DNS blocklist for **AdGuard Home** and **AdGuard for Android**. Compiled daily via GitHub Actions from world-class upstream sources.
 
-## Subscribe(订阅链接)
+## 订阅链接 (Subscribe)
 
 | Channel | URL |
 |---|---|
-| GitHub Raw(推荐) | `https://raw.githubusercontent.com/LucentDNS/cleansweep-dns/main/filter.txt` |
-| jsDelivr CDN(国内可达,约 12h 缓存) | `https://cdn.jsdelivr.net/gh/LucentDNS/cleansweep-dns@main/filter.txt` |
+| GitHub Raw (推荐) | `https://raw.githubusercontent.com/LucentDNS/cleansweep-dns/main/filter.txt` |
+| jsDelivr CDN (国内可达, 约 12h 缓存) | `https://cdn.jsdelivr.net/gh/LucentDNS/cleansweep-dns@main/filter.txt` |
 
 ## What it blocks
 - Web & in-app ads, trackers, telemetry, crypto miners
@@ -27,8 +27,8 @@ A curated, all-in-one DNS blocklist for **AdGuard Home** and **AdGuard for Andro
 Full credits and licenses belong to the upstream authors. This list only aggregates and normalizes them for DNS-level blocking.
 
 ## Usage
-- **AdGuard Home**:Filters → DNS blocklists → Add blocklist → paste URL
-- **AdGuard Android**:Settings → DNS protection → DNS blocklists → Add → paste URL
+- **AdGuard Home**: Filters → DNS blocklists → Add blocklist → paste URL
+- **AdGuard Android**: Settings → DNS protection → DNS blocklists → Add → paste URL
 
 ## License
 GPL-3.0
